@@ -113,12 +113,22 @@ function initSmoothScrolling() {
             const target = document.querySelector(href);
             if (target) {
                 e.preventDefault();
-                const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+                
+                // Get navbar height dynamically
+                const navbar = document.querySelector('.navbar');
+                const navbarHeight = navbar ? navbar.offsetHeight : 80;
+                const offsetTop = target.offsetTop - navbarHeight - 20; // Extra padding
                 
                 window.scrollTo({
-                    top: offsetTop,
+                    top: Math.max(0, offsetTop), // Ensure we don't scroll to negative position
                     behavior: 'smooth'
                 });
+                
+                // Add active state feedback
+                target.classList.add('highlight-section');
+                setTimeout(() => {
+                    target.classList.remove('highlight-section');
+                }, 2000);
             }
         });
     });
